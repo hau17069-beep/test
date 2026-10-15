@@ -6,4 +6,4 @@ Description: Auto refresh + auto pick + filter cho Foody Free Pick
 Author: You
 Maintainer: You
 Section: Tweaks
-Depends: mobilesubstrate
+Depends: ellekit
