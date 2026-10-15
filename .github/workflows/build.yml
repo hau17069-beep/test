@@ -23,6 +23,16 @@ jobs:
           echo "THEOS=$THEOS" >> $GITHUB_ENV
           echo "$THEOS/bin" >> $GITHUB_PATH
       
+      - name: Install roothide package scheme
+        run: |
+          cd $HOME/theos
+          mkdir -p vendor/roothide
+          git clone --depth 1 https://github.com/roothide/theos.git temp_roothide
+          cp -r temp_roothide/vendor/roothide/* vendor/roothide/ 2>/dev/null || true
+          rm -rf temp_roothide
+          echo "📁 Vendor contents:"
+          ls -la vendor/roothide/ 2>/dev/null || echo "Không tìm thấy"
+      
       - name: Download iOS SDK
         run: |
           cd $THEOS/sdks
