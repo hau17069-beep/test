@@ -1,0 +1,40 @@
+name: Build Tweak
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Install ldid
+        run: brew install ldid
+      
+      - name: Install Theos
+        run: |
+          export THEOS=$HOME/theos
+          git clone --recursive https://github.com/theos/theos.git $THEOS
+          echo "THEOS=$THEOS" >> $GITHUB_ENV
+          echo "$THEOS/bin" >> $GITHUB_PATH
+      
+      - name: Download iOS SDK
+        run: |
+          cd $THEOS/sdks
+          git clone --depth 1 https://github.com/theos/sdks.git temp
+          mv temp/*.sdk . 2>/dev/null || true
+          rm -rf temp
+      
+      - name: Build tweak (ROOTHIDE)
+        run: make package THEOS_PACKAGE_SCHEME=roothide
+      
+      - name: Upload .deb artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: AutoPickFoody-deb-roothide
+          path: packages/*.deb
