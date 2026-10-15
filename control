@@ -1,0 +1,9 @@
+Package: vn.foody.autopick
+Name: AutoPick Foody VIP
+Version: 15.0.0
+Architecture: iphoneos-arm64
+Description: Auto refresh + auto pick + filter cho Foody Free Pick
+Author: You
+Maintainer: You
+Section: Tweaks
+Depends: mobilesubstrate
