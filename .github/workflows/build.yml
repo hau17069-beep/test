@@ -16,22 +16,15 @@ jobs:
       - name: Install ldid
         run: brew install ldid
       
-      - name: Install Theos
+      - name: Install Theos (roothide fork)
         run: |
           export THEOS=$HOME/theos
-          git clone --recursive https://github.com/theos/theos.git $THEOS
+          git clone --recursive https://github.com/roothide/theos.git $THEOS
           echo "THEOS=$THEOS" >> $GITHUB_ENV
           echo "$THEOS/bin" >> $GITHUB_PATH
-      
-      - name: Install roothide package scheme
-        run: |
-          cd $HOME/theos
-          mkdir -p vendor/roothide
-          git clone --depth 1 https://github.com/roothide/theos.git temp_roothide
-          cp -r temp_roothide/vendor/roothide/* vendor/roothide/ 2>/dev/null || true
-          rm -rf temp_roothide
-          echo "📁 Vendor contents:"
-          ls -la vendor/roothide/ 2>/dev/null || echo "Không tìm thấy"
+          cd $THEOS
+          git checkout master
+          git submodule update --init --recursive
       
       - name: Download iOS SDK
         run: |
@@ -48,3 +41,4 @@ jobs:
         with:
           name: AutoPickFoody-deb-roothide
           path: packages/*.deb
+          
